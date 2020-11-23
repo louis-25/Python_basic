@@ -1,0 +1,55 @@
+# Section12-1
+# 파이썬 데이터베이스 연동(SQLite)
+# 테이블 생성 및 삽입
+
+import sqlite3
+import datetime
+
+# 삽입 날짜 생성
+now = datetime.datetime.now()
+print('now : ', now)
+
+nowDatetime = now.strftime('%Y-%m-%d %H:%M:%S')
+print('nowDatetime : ',nowDatetime)
+
+# sqlite3
+print('sqlite3.version : ', sqlite3.version)
+print('sqlite3.sqlite_version : ',sqlite3.sqlite_version)
+
+# DB 생성 & Auto Commit(Rollback)
+conn = sqlite3.connect('D:\Study\IT_Skill\패스트캠퍼스\Python\python_basic/resource/database.db', isolation_level=None)
+
+# Cursor
+c = conn.cursor()
+print('Cursor Type ', type(c))
+
+# 테이블 생성(Data Type : TEXT, NUMERIC INTEGER REAL BLOB)
+c.execute("CREATE TABLE IF NOT EXISTS users(id INTEGER PRIMARY KEY, username text, email text \
+,phone text, website text, regdata text)") # 테이블이 없으면 만들겠다
+
+
+# 테이블 삽입
+#c.execute("INSERT INTO users VALUES(1, 'Kim', 'Kim@naver.com', '010-1234-5678', \
+    #'Kim.com', ?)", (nowDatetime,)) # nowDatetime 이 ? 에 매칭돼 들어감
+#c.execute("INSERT INTO users(id, username, email, phone, website, regdata) VALUES(?,?,?,?,?,?)",(2, 'Lee', 'Lee@naver.com', '010-1234-5678', 'Lee.com', nowDatetime))
+
+# Many 삽입(튜플, 리스트)
+userList = (
+    (3, 'Park', 'Park@naver.com', '010-0000-0003', 'Park.com', nowDatetime),
+    (4, 'Choi', 'Choi@naver.com', '010-0000-0004', 'Choi.com', nowDatetime),
+    (5, 'Jung', 'Jung@naver.com', '010-0000-0005', 'Jung.com', nowDatetime)
+)
+
+# c.executemany("INSERT INTO users(id, username, email, phone, website, regdata) VALUES(?,?,?,?,?,?)", userList)
+
+# 테이블 데이터 삭제
+# conn.execute("DELETE FROM users")
+# print("users db deleted : ", conn.execute("DELETE FROM users").rowcount) # 데이터를 지운 후 몇개를 지웠는지 알려준다
+
+# 커밋 : isolation_level = None 일 경우 자동 반영(오토 커밋)
+
+# 롤백
+# conn.rollback()
+
+# 접속 해제
+# conn.close()
